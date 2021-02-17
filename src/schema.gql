@@ -1,0 +1,41 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PostDTO {
+  idx: Float!
+  title: String!
+  description: String!
+  content: String!
+  is_deleted: Boolean!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  getPost(idx: Float!): PostDTO!
+  getAllPosts: [PostDTO!]!
+}
+
+type Mutation {
+  createPost(postData: CreatePostDTO!): PostDTO!
+  updatePost(postData: UpdatePostDTO!, idx: Float!): PostDTO!
+  deletePost(idx: Float!): PostDTO!
+}
+
+input CreatePostDTO {
+  title: String!
+  description: String!
+  content: String!
+}
+
+input UpdatePostDTO {
+  title: String
+  description: String
+  content: String
+}

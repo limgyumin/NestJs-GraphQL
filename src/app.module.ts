@@ -4,12 +4,13 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostModule } from './post/post.module';
+import { join } from 'path';
 
 @Module({
   imports: [
     PostModule,
     GraphQLModule.forRoot({
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     TypeOrmModule.forRoot(),
   ],
