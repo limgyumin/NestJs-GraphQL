@@ -1,20 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreatePostDTO } from './model/createPost.dto';
-import { PostDTO } from './model/post.dto';
-import { UpdatePostDTO } from './model/updatePost.dto';
-import { Post } from './post.entity';
+import { CreatePostInput } from './dto/create-post.input';
+import { UpdatePostInput } from './dto/update-post.input';
+import { Post } from './model/post.model';
 import { PostRepository } from './post.repository';
 
 @Injectable()
 export class PostService {
   constructor(private readonly postRepository: PostRepository) {}
 
-  async createPost(createPostDTO: CreatePostDTO): Promise<PostDTO> {
-    const post = this.postRepository.create(createPostDTO);
+  async createPost(data: CreatePostInput): Promise<Post> {
+    const post = this.postRepository.create(data);
 
-    post.title = createPostDTO.title;
-    post.description = createPostDTO.description;
-    post.content = createPostDTO.content;
+    post.title = data.title;
+    post.description = data.description;
+    post.content = data.content;
 
     return await this.postRepository.save(post);
   }
@@ -33,10 +32,7 @@ export class PostService {
     return posts;
   }
 
-  async updatePost(
-    idx: number,
-    updatePostDTO: UpdatePostDTO,
-  ): Promise<PostDTO> {
+  async updatePost(idx: number, data: UpdatePostInput): Promise<Post> {
     const post = await this.postRepository.findByPostIdxByIsDeleted(idx, false);
 
     if (!post) {
@@ -48,15 +44,15 @@ export class PostService {
       );
     }
 
-    post.title = updatePostDTO.title;
-    post.description = updatePostDTO.description;
-    post.content = updatePostDTO.content;
+    post.title = data.title;
+    post.description = data.description;
+    post.content = data.content;
     post.updated_at = new Date();
 
     return await this.postRepository.save(post);
   }
 
-  async deletePost(idx: number): Promise<PostDTO> {
+  async deletePost(idx: number): Promise<Post> {
     const post = await this.postRepository.findByPostIdxByIsDeleted(idx, false);
 
     if (!post) {
