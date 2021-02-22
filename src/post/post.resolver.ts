@@ -1,38 +1,38 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { PostDTO } from './model/post.dto';
-import { CreatePostDTO } from './model/createPost.dto';
+import { CreatePostInput } from './dto/create-post.input';
 import { PostService } from './post.service';
-import { UpdatePostDTO } from './model/updatePost.dto';
+import { UpdatePostInput } from './dto/update-post.input';
+import { Post } from './model/post.model';
 
 @Resolver()
 export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
-  @Mutation(() => PostDTO)
-  async createPost(@Args('postData') data: CreatePostDTO): Promise<PostDTO> {
+  @Mutation(() => Post)
+  async createPost(@Args('postData') data: CreatePostInput): Promise<Post> {
     return await this.postService.createPost(data);
   }
 
-  @Query(() => PostDTO)
-  async getPost(@Args('idx') idx: number): Promise<PostDTO> {
+  @Query(() => Post)
+  async getPost(@Args('idx') idx: number): Promise<Post> {
     return await this.postService.getPost(idx);
   }
 
-  @Query(() => [PostDTO])
-  async getAllPosts(): Promise<PostDTO[]> {
+  @Query(() => [Post])
+  async getAllPosts(): Promise<Post[]> {
     return await this.postService.getAllPosts();
   }
 
-  @Mutation(() => PostDTO)
+  @Mutation(() => Post)
   async updatePost(
     @Args('idx') idx: number,
-    @Args('postData') data: UpdatePostDTO,
-  ): Promise<PostDTO> {
+    @Args('postData') data: UpdatePostInput,
+  ): Promise<Post> {
     return await this.postService.updatePost(idx, data);
   }
 
-  @Mutation(() => PostDTO)
-  async deletePost(@Args('idx') idx: number): Promise<PostDTO> {
+  @Mutation(() => Post)
+  async deletePost(@Args('idx') idx: number): Promise<Post> {
     return await this.postService.deletePost(idx);
   }
 }
