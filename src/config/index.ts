@@ -17,4 +17,7 @@ export default {
   APP: {
     PORT: parseInt(getEnv('PORT')),
   },
+  JWT: {
+    JWT_SECRET: getEnv('JWT_SECRET'),
+  },
 };

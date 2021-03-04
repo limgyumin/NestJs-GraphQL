@@ -17,15 +17,25 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type User {
+  idx: Float!
+  id: String!
+  password: String!
+  is_admin: Boolean!
+  created_at: DateTime!
+}
+
 type Query {
   getPost(idx: Float!): Post!
   getAllPosts: [Post!]!
+  me: User!
 }
 
 type Mutation {
   createPost(postData: CreatePostInput!): Post!
   updatePost(postData: UpdatePostInput!, idx: Float!): Post!
   deletePost(idx: Float!): Post!
+  login(user: CreateUserInput!): String!
 }
 
 input CreatePostInput {
@@ -38,4 +48,9 @@ input UpdatePostInput {
   title: String
   description: String
   content: String
+}
+
+input CreateUserInput {
+  id: String!
+  password: String!
 }
