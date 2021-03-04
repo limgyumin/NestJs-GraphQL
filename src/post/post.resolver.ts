@@ -1,16 +1,23 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreatePostInput } from './dto/create-post.input';
 import { PostService } from './post.service';
 import { UpdatePostInput } from './dto/update-post.input';
 import { Post } from './model/post.model';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { User } from 'src/user/model/user.model';
 
 @Resolver()
 export class PostResolver {
   constructor(private readonly postService: PostService) {}
 
+  @UseGuards(new AuthGuard())
   @Mutation(() => Post)
-  async createPost(@Args('postData') data: CreatePostInput): Promise<Post> {
-    return await this.postService.createPost(data);
+  async createPost(
+    @Context('user') user: User,
+    @Args('postData') data: CreatePostInput,
+  ): Promise<Post> {
+    return await this.postService.createPost(data, user);
   }
 
   @Query(() => Post)

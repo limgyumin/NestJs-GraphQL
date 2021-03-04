@@ -1,9 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { User } from 'src/user/model/user.model';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @ObjectType()
@@ -39,6 +42,15 @@ export class Post {
     nullable: false,
   })
   is_deleted: boolean;
+
+  @Field(() => User)
+  @ManyToOne(() => User, { onDelete: 'SET NULL', cascade: true })
+  @JoinColumn({ name: 'fk_user_idx' })
+  user: User;
+
+  @Field(() => Number)
+  @Column({ nullable: true })
+  fk_user_idx: number;
 
   @Field(() => Date)
   @Column('timestamptz')
